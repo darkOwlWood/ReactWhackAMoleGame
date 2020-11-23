@@ -1,0 +1,14 @@
+.mole-board{
+    width: 450px;
+    height: 450px;
+
+    background-color: brown;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
