@@ -26,7 +26,7 @@ const Mole = ({activeMole,molePoints}) => {
                 if(Math.floor(Math.random()*2)){//THE GOES OUT OR NOT
                     activeMole.current = activeMole.current + 1;
                     setMoleState({position: OUT_STATE, type: getMoleType()});
-                    setTimeout(() => {
+                    timerId.current = setTimeout(() => {
                         activeMole.current = activeMole.current - 1;
                         setMoleState({...moleState,position:IN_STATE});
                     },MOLE_OUT_TIME);
@@ -67,9 +67,10 @@ const Mole = ({activeMole,molePoints}) => {
     }
 
     const handleClick = () =>{
-        // clearTimeout(timerId);
-        // molePoints(moleState.type);
-        // setMoleState({...moleState, position: HIT_STATE});
+        clearTimeout(timerId.current);
+        molePoints(moleState.type);
+        activeMole.current = activeMole.current - 1;
+        setMoleState({position: IN_STATE, type:NO_MOLE.id});
     }
 
     return (
