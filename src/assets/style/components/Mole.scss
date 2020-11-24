@@ -1,14 +1,21 @@
 .mole{
-    width: 33.33%;
-    height: 33.33%;
+    // width: 33.33%;
+    // height: 33.33%;
+
+    width: 25%;
+    height: 25%;
 
     background-color: burlywood;
 }
 
-// .mole:nth-child(even){
-//     background-color: cadetblue;
-// }
+.mole--active-blue{
+    background-color: cornflowerblue;
+}
 
-div.mole--active{
-    background-color: whitesmoke;
+.mole--active-red{
+    background-color: crimson;
+}
+
+.mole--active-gold{
+    background-color: gold;
 }

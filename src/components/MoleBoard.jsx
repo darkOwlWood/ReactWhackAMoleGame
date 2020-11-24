@@ -1,33 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../assets/style/components/MoleBoard.scss';
 import Mole from './Mole';
 
-const MOLE_NUMBER = 9;
+const MOLE_NUMBER = 16;
+const RED_MOLE =  {id:0, points: 100};
+const BLUE_MOLE = {id:1, points: 150};
+const GOLD_MOLE = {id:2, points: 300};
 
 const MoleBoard = () => {
 
-    const [pattern, setPatter] = useState(Array(MOLE_NUMBER).fill(0).map( () => Math.floor(Math.random()*2) ));
+    const activeMole = useRef(0);
+    const [score,setScore] = useState(0);
 
-    useEffect(() => {
-        setTimeout( () => setPatter(Array(MOLE_NUMBER).fill(0)) ,15000)
-    },[]);
+    const molePoints = (moleId) => {
+        let points = 0;
+        
+        switch(moleId){
+            case RED_MOLE.id:  points=RED_MOLE.points;  break;
+            case BLUE_MOLE.id: points=BLUE_MOLE.points; break;
+            case GOLD_MOLE.id: points=GOLD_MOLE.points; break;
+            default: points=0;
+        }
 
-    const hitMole = (id) => {
-        const pattern_copy = [...pattern];
-        pattern_copy[id] = 0;
-        setPatter(pattern_copy);
+        setScore(score+points);
     }
 
     return (
         <div className="mole-board">
             {
-                Array(9).fill(0).map( 
+                Array(MOLE_NUMBER).fill(0).map( 
                     (val,ndx) => (
                         <Mole 
-                            key={ndx} 
-                            id={ndx}
-                            pattern={pattern}
-                            onClick={hitMole}
+                            key={ndx}
+                            molePoints={molePoints}
+                            activeMole={activeMole}
                         />
                     )
                 )
