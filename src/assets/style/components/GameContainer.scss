@@ -5,6 +5,19 @@
     background-color: aquamarine;
 
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
+}
+
+.game-container__mole-board{
+    width: 450px;
+    height: 450px;
+}
+
+.game-container__game-stat{
+    width: 500px;
+    height: 70px;
+
+    background-color: darkcyan;
 }

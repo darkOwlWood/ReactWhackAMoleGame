@@ -3,14 +3,18 @@ import '../assets/style/components/MoleBoard.scss';
 import Mole from './Mole';
 
 const MOLE_NUMBER = 16;
-const RED_MOLE =  {id:0, points: 100};
+const RED_MOLE  = {id:0, points: 100};
 const BLUE_MOLE = {id:1, points: 150};
 const GOLD_MOLE = {id:2, points: 300};
 
-const MoleBoard = () => {
+const MoleBoard = ({setGameStats}) => {
 
     const activeMole = useRef(0);
     const [score,setScore] = useState(0);
+
+    useEffect(() => {
+        setGameStats({score});
+    },[score]);
 
     const molePoints = (moleId) => {
         let points = 0;
