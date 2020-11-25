@@ -12,32 +12,46 @@ const GOLD_MOLE = {id:2,  points: 300, className: 'mole--active-gold'};
 
 const GLOBAL_WAIT_TIME = 4000;
 const MOLE_OUT_TIME = 2000;
-const MOLE_WAIT_TIME = 1000;
+const MOLE_WAIT_TIME = [1300,1000,700];
 const MAX_MOLE = 8;
 
-const Mole = ({activeMole,molePoints}) => {
+const Mole = ({lockMole,activeMole,molePoints}) => {
 
+    const divEl = useRef(null);
     const timerId = useRef(null);
+    const timerId2 = useRef(null);
     const [moleState, setMoleState] = useState({position: IN_STATE, type:NO_MOLE.id});
 
     useEffect(() => {
-        setTimeout(() => {
-            if(moleState.position===IN_STATE && activeMole.current < MAX_MOLE){
-                if(Math.floor(Math.random()*2)){//THE GOES OUT OR NOT
-                    activeMole.current = activeMole.current + 1;
-                    setMoleState({position: OUT_STATE, type: getMoleType()});
-                    timerId.current = setTimeout(() => {
-                        activeMole.current = activeMole.current - 1;
-                        setMoleState({...moleState,position:IN_STATE});
-                    },MOLE_OUT_TIME);
-                }else{
-                    setTimeout(() => setMoleState({...moleState}),0);
+        if(lockMole){
+            console.log('Block');
+            clearTimeout(timerId.current);
+            clearTimeout(timerId2.current);
+            activeMole.current = 0;
+            setMoleState({position: IN_STATE, type:NO_MOLE.id});
+        }
+    },[lockMole]);
+
+    useEffect(() => {
+        if(!lockMole){
+            timerId2.current = setTimeout(() => {
+                if(moleState.position===IN_STATE && activeMole.current<MAX_MOLE){
+                    if(Math.floor(Math.random()*2)){//THE GOES OUT OR NOT
+                        activeMole.current = activeMole.current + 1;
+                        setMoleState({position: OUT_STATE, type: getMoleType()});
+                        timerId.current = setTimeout(() => {
+                            activeMole.current = activeMole.current - 1;
+                            setMoleState({...moleState,position:IN_STATE});
+                        },MOLE_OUT_TIME);
+                    }else{
+                        setMoleState({...moleState});
+                    }
+                }else if(moleState===IN_STATE){
+                    setMoleState({...moleState});
                 }
-            }else if(moleState===IN_STATE){
-                setTimeout(() => setMoleState({...moleState}),0);
-            }
-        },MOLE_WAIT_TIME);
-    },[moleState]);
+            },MOLE_WAIT_TIME[Math.floor(Math.random()*3)]);
+        }
+    },[moleState,lockMole]);
 
 
     function getMoleType(){
@@ -67,20 +81,22 @@ const Mole = ({activeMole,molePoints}) => {
     }
 
     const handleClick = () =>{
-        clearTimeout(timerId.current);
-        molePoints(moleState.type);
-        activeMole.current = activeMole.current - 1;
-        setMoleState({position: IN_STATE, type:NO_MOLE.id});
+        if(!lockMole){
+            clearTimeout(timerId.current);
+            molePoints(moleState.type);
+            activeMole.current = activeMole.current - 1;
+            setMoleState({position: IN_STATE, type:NO_MOLE.id});
+        }
     }
 
     return (
         <div 
             className={`mole ${getMoleCssClass(moleState.type)}`} 
-            onClick={moleState.position===OUT_STATE? handleClick : ()=>{}}
+            onClick={(moleState.position===OUT_STATE)? handleClick : ()=>{}}
         >
 
         </div>
     );
 }
 
-export default React.memo(Mole);
+export default Mole;

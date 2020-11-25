@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import '../assets/style/components/MoleBoard.scss';
 import Mole from './Mole';
 
+const INIT_TIME = 30;
 const MOLE_NUMBER = 16;
 const RED_MOLE  = {id:0, points: 100};
 const BLUE_MOLE = {id:1, points: 150};
@@ -11,7 +12,7 @@ const MoleBoard = ({clock,gameStats,setGameStats}) => {
 
     const activeMole = useRef(0);
     const [score,setScore] = useState(0);
-    const [stopMoles,setStopMoles] = useState(0);
+    const [lockMole,setLockMole] = useState(0)
 
     useEffect(() => {
         setGameStats({...gameStats, score});
@@ -19,7 +20,10 @@ const MoleBoard = ({clock,gameStats,setGameStats}) => {
 
     useEffect( () => {
         if(!clock){
-            setStopMoles(1);
+            setScore(0);
+            setLockMole(1);
+        }else if(clock===INIT_TIME){
+            setLockMole(0);
         }
     },[clock]);
 
@@ -39,17 +43,16 @@ const MoleBoard = ({clock,gameStats,setGameStats}) => {
     return (
         <div className="mole-board">
             {
-                !stopMoles?
                 Array(MOLE_NUMBER).fill(0).map( 
                     (val,ndx) => (
                         <Mole 
                             key={ndx}
+                            lockMole={lockMole}
                             molePoints={molePoints}
                             activeMole={activeMole}
                         />
                     )
                 )
-                :''
             }
         </div>
     );

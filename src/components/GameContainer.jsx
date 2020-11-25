@@ -1,14 +1,18 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import '../assets/style/components/GameContainer.scss';
 import MoleBoard from './MoleBoard';
 import GameStat from './GameStat';
 
 const INIT_TIME = 30;
+const FINAL_ROUND = 5;
+const SCORE_NEEDED = 100;
 
 const GameContainer = () => {
 
-    const [clock, setClock] = useState(INIT_TIME)
-    const [gameStats, setGameStats] = useState({score: 0});
+    const [clock, setClock] = useState(INIT_TIME);
+    const [gameStats, setGameStats] = useState({score: 0, round: 1, scoreNeeded: SCORE_NEEDED});
+
+    // console.log('Current',gameStats.score);
 
     useLayoutEffect( () => {
         if(clock===INIT_TIME){
@@ -19,8 +23,23 @@ const GameContainer = () => {
                 setClock(innerClock);
                 !innerClock && clearInterval(timer.id);
             },1000);//EVERY SECOND
+        }else if(!clock){
+            nextLevel();
         }
     },[clock]);
+
+    function nextLevel(){
+        if(gameStats.round<FINAL_ROUND && gameStats.score>=SCORE_NEEDED){
+            console.log('Next Level');
+            setGameStats({...gameStats, round: ++gameStats.round});
+            setTimeout(() => setClock(INIT_TIME),4000);
+        }else if(gameStats.round===FINAL_ROUND && gameStats.score>=SCORE_NEEDED){
+            console.log('Congratulations you beat the game !!!');
+        }else{
+            // setGameStats({...gameStats, score: 0, round: 1});
+            console.log('Looser!!!');
+        }
+    }
 
     return (
         <div className="game-container">
