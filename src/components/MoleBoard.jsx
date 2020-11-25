@@ -7,14 +7,21 @@ const RED_MOLE  = {id:0, points: 100};
 const BLUE_MOLE = {id:1, points: 150};
 const GOLD_MOLE = {id:2, points: 300};
 
-const MoleBoard = ({setGameStats}) => {
+const MoleBoard = ({clock,gameStats,setGameStats}) => {
 
     const activeMole = useRef(0);
     const [score,setScore] = useState(0);
+    const [stopMoles,setStopMoles] = useState(0);
 
     useEffect(() => {
-        setGameStats({score});
+        setGameStats({...gameStats, score});
     },[score]);
+
+    useEffect( () => {
+        if(!clock){
+            setStopMoles(1);
+        }
+    },[clock]);
 
     const molePoints = (moleId) => {
         let points = 0;
@@ -32,6 +39,7 @@ const MoleBoard = ({setGameStats}) => {
     return (
         <div className="mole-board">
             {
+                !stopMoles?
                 Array(MOLE_NUMBER).fill(0).map( 
                     (val,ndx) => (
                         <Mole 
@@ -41,6 +49,7 @@ const MoleBoard = ({setGameStats}) => {
                         />
                     )
                 )
+                :''
             }
         </div>
     );
