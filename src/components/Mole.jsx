@@ -12,7 +12,7 @@ const GOLD_MOLE = {id:2,  points: 300, className: 'mole--active-gold'};
 
 const GLOBAL_WAIT_TIME = 4000;
 const MOLE_OUT_TIME = 2000;
-const MOLE_WAIT_TIME = [1300,1000,700];
+const MOLE_WAIT_TIME = [1500,2000,700];
 const MAX_MOLE = 8;
 
 const Mole = ({lockMole,activeMole,molePoints}) => {
@@ -26,27 +26,24 @@ const Mole = ({lockMole,activeMole,molePoints}) => {
         if(lockMole){
             console.log('Block');
             clearTimeout(timerId.current);
-            clearTimeout(timerId2.current);
-            activeMole.current = 0;
             setMoleState({position: IN_STATE, type:NO_MOLE.id});
+            activeMole.current = 0;
         }
     },[lockMole]);
 
     useEffect(() => {
         if(!lockMole){
-            timerId2.current = setTimeout(() => {
+            timerId.current = setTimeout(() => {
                 if(moleState.position===IN_STATE && activeMole.current<MAX_MOLE){
-                    if(Math.floor(Math.random()*2)){//THE GOES OUT OR NOT
-                        activeMole.current = activeMole.current + 1;
-                        setMoleState({position: OUT_STATE, type: getMoleType()});
-                        timerId.current = setTimeout(() => {
-                            activeMole.current = activeMole.current - 1;
-                            setMoleState({...moleState,position:IN_STATE});
-                        },MOLE_OUT_TIME);
-                    }else{
-                        setMoleState({...moleState});
-                    }
-                }else if(moleState===IN_STATE){
+                    const type = getMoleType();
+                    activeMole.current = type!==NO_MOLE.id? 
+                                            ++activeMole.current 
+                                            :activeMole.current;
+                    setMoleState({...moleState, position: OUT_STATE, type});
+                }else if(moleState.position===OUT_STATE){
+                    activeMole.current = activeMole.current - 1;
+                    setMoleState({...moleState, position: IN_STATE, type:NO_MOLE.id});
+                }else{
                     setMoleState({...moleState});
                 }
             },MOLE_WAIT_TIME[Math.floor(Math.random()*3)]);
@@ -55,15 +52,17 @@ const Mole = ({lockMole,activeMole,molePoints}) => {
 
 
     function getMoleType(){
-        let moleType = 0;
-        const randomNumber = Math.floor(Math.random()*100)+1;
+        let moleType = NO_MOLE.id;
 
-        moleType = (randomNumber>=1 && randomNumber<=50)?
-                    RED_MOLE.id
-                    :(randomNumber>=51 && randomNumber<=90)?
-                    BLUE_MOLE.id
-                    :(randomNumber>=91 && randomNumber<=100)?
-                    GOLD_MOLE.id : NO_MOLE.id;
+        if(Math.floor(Math.random()*2)){
+            const randomNumber = Math.floor(Math.random()*100)+1;
+            moleType = (randomNumber>=1 && randomNumber<=50)?
+                        RED_MOLE.id
+                        :(randomNumber>=51 && randomNumber<=90)?
+                        BLUE_MOLE.id
+                        :(randomNumber>=91 && randomNumber<=100)?
+                        GOLD_MOLE.id : NO_MOLE.id;
+        }
 
         return moleType;
     }
