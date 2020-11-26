@@ -11,13 +11,29 @@
 }
 
 .game-container__mole-board{
-    width: 450px;
-    height: 450px;
+    width: 350px;
+    height: 350px;
+
+    position: relative;
 }
 
 .game-container__game-stat{
-    width: 500px;
+    width: 350px;
     height: 70px;
 
     background-color: darkcyan;
+}
+
+@media(min-width: 700px){
+    .game-container__mole-board{
+        width: 450px;
+        height: 450px;
+    }
+    
+    .game-container__game-stat{
+        width: 500px;
+        height: 70px;
+    
+        background-color: darkcyan;
+    }   
 }

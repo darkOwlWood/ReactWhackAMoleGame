@@ -1,0 +1,53 @@
+$fadeOut-time: 2s;
+$fadeIn-time: 1s;
+
+.start-button{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    background-color: rgba(0,0,0,.4);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.start-button--fade-in{
+    animation: fadeIn $fadeIn-time forwards;
+}
+
+.start-button--fade-out{
+    animation: fadeOut $fadeOut-time forwards;
+}
+
+.start-button__item{
+    width: 200px;
+    height: 50px;
+    
+    font-size: 1.4em;
+}
+
+@keyframes fadeOut{
+    0%{
+        opacity: 1;
+    }
+
+    100%{
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}
