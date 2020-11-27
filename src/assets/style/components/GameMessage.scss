@@ -1,0 +1,77 @@
+$move-to-left-time: 2.5s;
+$move-to-right-time: 2.5s;
+
+.game-message{
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    overflow: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.game-message__item{
+    width: 100%;
+    height: 50%;
+    
+    background-color: darkslateblue;
+
+    position: absolute;
+}
+
+.game-message__item--right{
+    top: 0;
+    left: 100%;
+}
+
+.game-message__item--left{
+    bottom: 0;
+    right: 100%;
+}
+
+.game-message__item--moveToLeft{
+    animation: moveToLeft $move-to-left-time forwards;
+}
+
+.game-message__item--moveToRight{
+    animation: moveToRight $move-to-right-time forwards;
+}
+
+@keyframes moveToLeft{
+    0%{
+        left: 100%;
+    }
+
+    45%{
+        left: 0;
+    }
+
+    55%{
+        left: 0;
+    }
+
+    100%{
+        left: -100%;
+    }
+}
+
+@keyframes moveToRight{
+    0%{
+        right: 100%;
+    }
+
+    45%{
+        right: 0;
+    }
+
+    55%{
+        right: 0;
+    }
+
+    100%{
+        right: -100%;
+    }
+}

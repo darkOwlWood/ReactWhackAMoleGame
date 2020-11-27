@@ -8,14 +8,14 @@ const RED_MOLE  = {id:0, points: 100};
 const BLUE_MOLE = {id:1, points: 150};
 const GOLD_MOLE = {id:2, points: 300};
 
-const MoleBoard = ({clock,gameStats,setGameStats}) => {
+const MoleBoard = ({clock,gameInfo,setGameInfo}) => {
 
     const activeMole = useRef(0);
     const [score,setScore] = useState(0);
     const [lockMole,setLockMole] = useState(0)
 
     useEffect(() => {
-        setGameStats({...gameStats, score});
+        setGameInfo({...gameInfo, score});
     },[score]);
 
     useEffect( () => {

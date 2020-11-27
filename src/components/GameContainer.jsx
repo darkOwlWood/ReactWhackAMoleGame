@@ -3,22 +3,25 @@ import '../assets/style/components/GameContainer.scss';
 import MoleBoard from './MoleBoard';
 import GameStat from './GameStat';
 import StartMessage from './StartMessage';
+import GameMessage from './GameMessage';
 
 const INIT_TIME = 30;
 const FINAL_ROUND = 5;
-const SCORE_NEEDED = 100;
+const SCORE_NEEDED = 6000;
+
+const GAME_BEGIN = 0;
+const GAME_RUNING = 1;
+const GAME_LOSS = 2;
+const GAME_WIN = 3;
 
 const GameContainer = () => {
 
     const [clock, setClock] = useState(0);
-    const [gameStart, setGameStart] = useState(0);
-    const [gameStats, setGameStats] = useState({score: 0, round: 1, scoreNeeded: SCORE_NEEDED});
-
-    // console.log('Current',gameStats.score);
+    const [gameInfo, setGameInfo] = useState({score: 0, round: 1, scoreNeeded: SCORE_NEEDED, gameStatus: GAME_BEGIN});
 
     useLayoutEffect( () => {
-        console.log(gameStart)
-        if(clock===INIT_TIME && gameStart){
+        console.log(gameInfo.gameStatus)
+        if(clock===INIT_TIME && gameInfo.gameStatus===GAME_RUNING){
             let timer = { id: 0 };
             let innerClock = clock;
             timer.id = setInterval( () => {
@@ -26,22 +29,21 @@ const GameContainer = () => {
                 setClock(innerClock);
                 !innerClock && clearInterval(timer.id);
             },1000);//EVERY SECOND
-        }else if(!clock && gameStart){
+        }else if(!clock && gameInfo.gameStatus===GAME_RUNING){
             nextLevel();
         }
     },[clock]);
 
     function nextLevel(){
-        if(gameStats.round<FINAL_ROUND && gameStats.score>=SCORE_NEEDED){
+        if(gameInfo.round<FINAL_ROUND && gameInfo.score>=SCORE_NEEDED){
             console.log('Next Level');
-            setGameStats({...gameStats, round: ++gameStats.round});
+            setGameInfo({...gameInfo, round: ++gameInfo.round});
             setTimeout(() => setClock(INIT_TIME),4000);
-        }else if(gameStats.round===FINAL_ROUND && gameStats.score>=SCORE_NEEDED){
-            setGameStart(0);
+        }else if(gameInfo.round===FINAL_ROUND && gameInfo.score>=SCORE_NEEDED){
+            setGameInfo({...gameInfo, score:0, round:1, gameStatus: GAME_WIN});
             console.log('Congratulations you beat the game !!!');
         }else{
-            setGameStart(0);
-            // setGameStats({...gameStats, score: 0, round: 1});
+            setGameInfo({...gameInfo, score:0, round:1, gameStatus: GAME_LOSS});
             console.log('Looser!!!');
         }
     }
@@ -51,13 +53,21 @@ const GameContainer = () => {
             <div className="game-container__mole-board">
                 <MoleBoard 
                     clock={clock} 
-                    gameStats={gameStats} 
-                    setGameStats={setGameStats} 
+                    gameInfo={gameInfo} 
+                    setGameInfo={setGameInfo} 
                 />
-                { !gameStart && <StartMessage setClock={setClock} setGameStart={setGameStart} /> }
+                <GameMessage gameInfo={gameInfo} setGameInfo={setGameInfo} />
+                { 
+                    gameInfo.gameStatus===GAME_BEGIN && 
+                    <StartMessage 
+                        setClock={setClock} 
+                        gameInfo={gameInfo}
+                        setGameInfo={setGameInfo}
+                    /> 
+                }
             </div>
             <div className="game-container__game-stat">
-                <GameStat clock={clock} gameStats={gameStats}/>
+                <GameStat clock={clock} gameInfo={gameInfo}/>
             </div>
         </div>
     );
