@@ -11,6 +11,7 @@ $fadeIn-time: 1s;
 
     opacity: 0;
     background-color: rgba(0,0,0,.4);
+    border-radius: 10px;
 
     position: absolute;
     top: 0;
@@ -29,8 +30,25 @@ $fadeIn-time: 1s;
     width: 200px;
     height: 50px;
     
+    font-family: 'SuperMario256';
     font-size: 1.4em;
+
+    color: #E3F2FD;
+    text-shadow: 1PX 1PX 0 rgba(0,0,0,.6);
+    background-color: #1E88E5;
+    box-shadow: 3px 3px 0 #005CB2;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+
+    cursor: pointer;
 }
+
+.start-button__item:disabled{
+    color: #8AACC8;
+    background-color: #005CB2;
+    box-shadow: 0 0;
+  }
 
 @keyframes fadeOut{
     0%{

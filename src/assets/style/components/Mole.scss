@@ -1,8 +1,8 @@
 $go-out-time: .4s;
 
 .mole{
-    width: 24%;
-    height: 24%;
+    width: 21%;
+    height: 21%;
 
     overflow: hidden;
     position: relative;
@@ -73,4 +73,11 @@ $go-out-time: .4s;
 
 .mole__image--inactive{
     top: 100%;
+}
+
+@media(min-width: 600px){
+    .mole{
+        width: 22%;
+        height: 22%;
+    }
 }

@@ -2,7 +2,7 @@
     width: 100%;
     height: 100vh;
 
-    background-color: aquamarine;
+    background-image: url('../../static/grass_2.png');
 
     display: flex;
     flex-direction: column;
@@ -12,28 +12,28 @@
 
 .game-container__mole-board{
     width: 350px;
-    height: 350px;
+    height: 450px;
 
+    box-sizing: border-box;
     position: relative;
+
+    border: 19px solid transparent;
+    border-image: url('../../static/grassFrame.png') 13 round;
 }
 
 .game-container__game-stat{
     width: 350px;
     height: 70px;
-
-    background-color: darkcyan;
 }
 
 @media(min-width: 600px){
     .game-container__mole-board{
-        width: 450px;
-        height: 450px;
+        width: 500px;
+        height: 500px;
     }
     
     .game-container__game-stat{
         width: 500px;
         height: 70px;
-    
-        background-color: darkcyan;
     }   
 }

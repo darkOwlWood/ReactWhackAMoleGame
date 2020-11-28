@@ -39,6 +39,10 @@ module.exports = {
                         },
                     }
                 ]
+            },
+            {
+                test: /\.(ttf)$/,
+                loader: 'file-loader'
             }
         ]
     },
