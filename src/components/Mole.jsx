@@ -5,52 +5,67 @@ const IN_STATE  = 0;
 const OUT_STATE = 1;
 const HIT_STATE = 2;
 
-const NO_MOLE   = {id:-1, points: 0  , className: 'mole--active-zero'};
-const RED_MOLE  = {id:0,  points: 100, className: 'mole--active-red' };
-const BLUE_MOLE = {id:1,  points: 150, className: 'mole--active-blue'};
-const GOLD_MOLE = {id:2,  points: 300, className: 'mole--active-gold'};
+const NO_MOLE   = {id:-1, points: 0  , className: 'mole__image--active-zero', classNameHit: 'mole__image--hit_zero'};
+const RED_MOLE  = {id:0,  points: 100, className: 'mole__image--active-red' , classNameHit: 'mole__image--hit-red' };
+const BLUE_MOLE = {id:1,  points: 150, className: 'mole__image--active-blue', classNameHit: 'mole__image--hit-blue'};
+const GOLD_MOLE = {id:2,  points: 300, className: 'mole__image--active-gold', classNameHit: 'mole__image--hit-gold'};
 
-const GLOBAL_WAIT_TIME = 4000;
-const MOLE_OUT_TIME = 2000;
+const MOLE_TRANSITION = { className: 'mole__image--inactive', time: 400 };
 const MOLE_WAIT_TIME = [1500,2000,700];
 const MAX_MOLE = 8;
 
 const Mole = ({lockMole,activeMole,molePoints}) => {
 
-    const divEl = useRef(null);
-    const timerId = useRef(null);
-    const timerId2 = useRef(null);
+    const divMoleItem = useRef(null);
+    const MainTimerId = useRef(null);
     const [moleState, setMoleState] = useState({position: IN_STATE, type:NO_MOLE.id});
 
     useEffect(() => {
         if(lockMole){
             console.log('Block');
-            clearTimeout(timerId.current);
-            setMoleState({position: IN_STATE, type:NO_MOLE.id});
+            clearTimeout(MainTimerId.current);
             activeMole.current = 0;
+            setMoleState({position: IN_STATE, type:NO_MOLE.id});
+            goInAnimation();
         }
     },[lockMole]);
 
     useEffect(() => {
         if(!lockMole){
-            timerId.current = setTimeout(() => {
-                if(moleState.position===IN_STATE && activeMole.current<MAX_MOLE){
-                    const type = getMoleType();
-                    activeMole.current = type!==NO_MOLE.id? 
-                                            ++activeMole.current 
-                                            :activeMole.current;
-                    setMoleState({...moleState, position: OUT_STATE, type});
-                }else if(moleState.position===OUT_STATE){
-                    activeMole.current = activeMole.current - 1;
-                    setMoleState({...moleState, position: IN_STATE, type:NO_MOLE.id});
-                }else{
-                    setMoleState({...moleState});
-                }
-            },MOLE_WAIT_TIME[Math.floor(Math.random()*3)]);
+            MainTimerId.current = setTimeout(moleCicle,MOLE_WAIT_TIME[Math.floor(Math.random()*MOLE_WAIT_TIME.length)]);
         }
     },[moleState,lockMole]);
+    
+    function moleCicle(){
+        if(moleState.position===IN_STATE && activeMole.current<MAX_MOLE){
+            const type = getMoleType();
+            if(type!==NO_MOLE.id){
+                activeMole.current = ++activeMole.current 
+                setMoleState({...moleState, position:OUT_STATE, type});
+                goOutAnimation(type);
+            }else{
+                setMoleState({...moleState});
+            }
+        }else if(moleState.position===OUT_STATE){
+            activeMole.current = --activeMole.current;
+            setMoleState({...moleState, position: IN_STATE, type:NO_MOLE.id});
+            goInAnimation();
+        }else{
+            setMoleState({...moleState});
+        }
+    }
 
+    function goOutAnimation(type){
+        divMoleItem.current.classList.remove(NO_MOLE.className,RED_MOLE.className,BLUE_MOLE.className,GOLD_MOLE.className);
+        divMoleItem.current.classList.remove(NO_MOLE.classNameHit,RED_MOLE.classNameHit,BLUE_MOLE.classNameHit,GOLD_MOLE.classNameHit);
+        divMoleItem.current.classList.remove(MOLE_TRANSITION.className);
+        divMoleItem.current.classList.add(getMoleCssClass(type));
+    }
 
+    function goInAnimation(){
+        divMoleItem.current.classList.add(MOLE_TRANSITION.className);
+    }
+    
     function getMoleType(){
         let moleType = NO_MOLE.id;
 
@@ -67,13 +82,13 @@ const Mole = ({lockMole,activeMole,molePoints}) => {
         return moleType;
     }
 
-    const getMoleCssClass = (moleType) => {
+    const getMoleCssClass = (moleType,isHit) => {
         let cssClassName = '';
         switch(moleType){
-            case RED_MOLE.id:  cssClassName=RED_MOLE.className;  break;
-            case BLUE_MOLE.id: cssClassName=BLUE_MOLE.className; break; 
-            case GOLD_MOLE.id: cssClassName=GOLD_MOLE.className; break; 
-            default: cssClassName=NO_MOLE.className;
+            case RED_MOLE.id:  cssClassName=isHit? RED_MOLE.classNameHit  : RED_MOLE.className ; break;
+            case BLUE_MOLE.id: cssClassName=isHit? BLUE_MOLE.classNameHit : BLUE_MOLE.className; break; 
+            case GOLD_MOLE.id: cssClassName=isHit? GOLD_MOLE.classNameHit : GOLD_MOLE.className; break; 
+            default: cssClassName=isHit? NO_MOLE.classNameHit : NO_MOLE.className;
         }
 
         return cssClassName;
@@ -81,19 +96,18 @@ const Mole = ({lockMole,activeMole,molePoints}) => {
 
     const handleClick = () =>{
         if(!lockMole){
-            clearTimeout(timerId.current);
+            clearTimeout(MainTimerId.current);
+            activeMole.current = --activeMole.current;
+            setMoleState({...moleState, position: IN_STATE, type:NO_MOLE.id});
             molePoints(moleState.type);
-            activeMole.current = activeMole.current - 1;
-            setMoleState({position: IN_STATE, type:NO_MOLE.id});
+            divMoleItem.current.classList.add(getMoleCssClass(moleState.type,1));
+            goInAnimation();
         }
     }
 
     return (
-        <div 
-            className={`mole ${getMoleCssClass(moleState.type)}`} 
-            onClick={(moleState.position===OUT_STATE)? handleClick : ()=>{}}
-        >
-
+        <div className="mole" onClick={(moleState.position===OUT_STATE)? handleClick : ()=>{}}>
+            <div ref={divMoleItem} className="mole__image"></div>
         </div>
     );
 }

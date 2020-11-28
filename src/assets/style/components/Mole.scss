@@ -1,21 +1,56 @@
-.mole{
-    // width: 33.33%;
-    // height: 33.33%;
+$go-out-time: .4s;
 
+.mole{
     width: 25%;
     height: 25%;
 
-    background-color: burlywood;
+    background-color: black;
+
+    overflow: hidden;
+    position: relative;
 }
 
-.mole--active-blue{
-    background-color: cornflowerblue;
+.mole__image{
+    width: 100%;
+    height: 100%;
+
+    transition: top $go-out-time;
+
+    background-position: center 10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    position: absolute;
+    top: 100%;
 }
 
-.mole--active-red{
-    background-color: crimson;
+.mole__image--active-red{
+    background-image: url('../../static/digglett_red.png');
+    top: 0;
 }
 
-.mole--active-gold{
-    background-color: gold;
+.mole__image--active-blue{
+    background-image: url('../../static/digglett_blue.png');
+    top: 0;
+}
+
+.mole__image--active-gold{
+    background-image: url('../../static/digglett_gold.png');
+    top: 0;
+}
+
+.mole__image--hit-red{
+    background-image: url('../../static/digglett_red_hit.png');
+}
+
+.mole__image--hit-blue{
+    background-image: url('../../static/digglett_blue_hit.png');
+}
+
+.mole__image--hit-gold{
+    background-image: url('../../static/digglett_gold_hit.png');
+}
+
+.mole__image--inactive{
+    top: 100%;
 }
