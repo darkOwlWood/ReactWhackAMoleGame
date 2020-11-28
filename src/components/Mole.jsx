@@ -3,7 +3,6 @@ import '../assets/style/components/Mole.scss';
 
 const IN_STATE  = 0;
 const OUT_STATE = 1;
-const HIT_STATE = 2;
 
 const NO_MOLE   = {id:-1, points: 0  , className: 'mole__image--active-zero', classNameHit: 'mole__image--hit_zero'};
 const RED_MOLE  = {id:0,  points: 100, className: 'mole__image--active-red' , classNameHit: 'mole__image--hit-red' };
@@ -107,7 +106,9 @@ const Mole = ({lockMole,activeMole,molePoints}) => {
 
     return (
         <div className="mole" onClick={(moleState.position===OUT_STATE)? handleClick : ()=>{}}>
+            <div className="mole__hole-back-face"></div>
             <div ref={divMoleItem} className="mole__image"></div>
+            <div className="mole__hole-front-face"></div>
         </div>
     );
 }

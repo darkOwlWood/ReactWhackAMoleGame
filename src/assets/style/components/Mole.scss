@@ -1,13 +1,33 @@
 $go-out-time: .4s;
 
 .mole{
-    width: 25%;
-    height: 25%;
-
-    background-color: black;
+    width: 24%;
+    height: 24%;
 
     overflow: hidden;
     position: relative;
+}
+
+%mole_hole{
+    width: 100%;
+    height: 40px;
+    
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+
+    position: absolute;
+    bottom: 0;
+}
+
+.mole__hole-front-face{
+    background-image: url('../../static/digglett_hole_front.png');
+    @extend %mole_hole;
+}
+
+.mole__hole-back-face{
+    background-image: url('../../static/digglett_hole_back.png');
+    @extend %mole_hole;
 }
 
 .mole__image{
