@@ -19,30 +19,30 @@ const Mole = ({lockMole,activeMole,molePoints}) => {
     },[lockMole]);
 
     useEffect(() => {
-        if(!lockMole){
-            MainTimerId.current = setTimeout(moleCicle,Config.MOLE_WAIT_TIME[Math.floor(Math.random()*Config.MOLE_WAIT_TIME.length)]);
-        }
+        MainTimerId.current = lockMole? null : setTimeout(moleCicle,Config.MOLE_WAIT_TIME[Math.floor(Math.random()*Config.MOLE_WAIT_TIME.length)]);
     },[moleState,lockMole]);
     
     function moleCicle(){
-        if(moleState.position===Config.IN_STATE && activeMole.current<Config.MAX_MOLE){
-            const type = getMoleType();
-            if(type!==Config.NO_MOLE.id){
-                activeMole.current = ++activeMole.current 
-                setMoleState({...moleState, position:Config.OUT_STATE, type});
-                goOutAnimation(type);
+        if(!lockMole){
+            if(moleState.position===Config.IN_STATE && activeMole.current<Config.MAX_MOLE){
+                const type = getMoleType();
+                if(type!==Config.NO_MOLE.id){
+                    activeMole.current = ++activeMole.current 
+                    setMoleState({...moleState, position:Config.OUT_STATE, type});
+                    goOutAnimation(type);
+                }else{
+                    setMoleState({...moleState});
+                }
+            }else if(moleState.position===Config.OUT_STATE){
+                activeMole.current = --activeMole.current;
+                setMoleState({...moleState, position: Config.IN_STATE, type:Config.NO_MOLE.id});
+                goInAnimation();
             }else{
                 setMoleState({...moleState});
             }
-        }else if(moleState.position===Config.OUT_STATE){
-            activeMole.current = --activeMole.current;
-            setMoleState({...moleState, position: Config.IN_STATE, type:Config.NO_MOLE.id});
-            goInAnimation();
-        }else{
-            setMoleState({...moleState});
         }
     }
-
+    
     function goOutAnimation(type){
         divMoleItem.current.classList.remove(Config.NO_MOLE.className,Config.RED_MOLE.className,Config.BLUE_MOLE.className,Config.GOLD_MOLE.className);
         divMoleItem.current.classList.remove(Config.NO_MOLE.classNameHit,Config.RED_MOLE.classNameHit,Config.BLUE_MOLE.classNameHit,Config.GOLD_MOLE.classNameHit);
