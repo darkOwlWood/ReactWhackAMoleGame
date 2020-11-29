@@ -1,5 +1,5 @@
-$move-to-left-time: 2.5s;
-$move-to-right-time: 2.5s;
+$move-to-left-time: 3s;
+$move-to-right-time: 3s;
 
 .game-message{
     width: 100%;
@@ -8,7 +8,7 @@ $move-to-right-time: 2.5s;
     display: none;
     overflow: hidden;
 
-    font-size: 1.4em;
+    font-size: 1.8em;
     font-family: 'SuperMario256';
     text-shadow: 1px 1px 0 rgba(0,0,0,.6);
     color: #E3F2FD;
@@ -29,18 +29,16 @@ $move-to-right-time: 2.5s;
     align-items: center;
 
     position: absolute;
+
+    // background-color: coral;
 }
 
 .game-message__item--right{
-    padding-top: 110%;
-
     top: 0;
     left: 100%;
 }
 
 .game-message__item--left{
-    padding-bottom: 110%;
-
     bottom: 0;
     right: 100%;
 }

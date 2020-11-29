@@ -1,12 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../assets/style/components/MoleBoard.scss';
 import Mole from './Mole';
-
-const INIT_TIME = 30;
-const MOLE_NUMBER = 16;
-const RED_MOLE  = {id:0, points: 100};
-const BLUE_MOLE = {id:1, points: 150};
-const GOLD_MOLE = {id:2, points: 300};
+import Config from '../config';
 
 const MoleBoard = ({clock,gameInfo,setGameInfo}) => {
 
@@ -22,7 +17,7 @@ const MoleBoard = ({clock,gameInfo,setGameInfo}) => {
         if(!clock){
             setScore(0);
             setLockMole(1);
-        }else if(clock===INIT_TIME){
+        }else if(clock===Config.INIT_TIME){
             setLockMole(0);
         }
     },[clock]);
@@ -31,9 +26,9 @@ const MoleBoard = ({clock,gameInfo,setGameInfo}) => {
         let points = 0;
         
         switch(moleId){
-            case RED_MOLE.id:  points=RED_MOLE.points;  break;
-            case BLUE_MOLE.id: points=BLUE_MOLE.points; break;
-            case GOLD_MOLE.id: points=GOLD_MOLE.points; break;
+            case Config.RED_MOLE.id:  points=Config.RED_MOLE.points;  break;
+            case Config.BLUE_MOLE.id: points=Config.BLUE_MOLE.points; break;
+            case Config.GOLD_MOLE.id: points=Config.GOLD_MOLE.points; break;
             default: points=0;
         }
 
@@ -43,7 +38,7 @@ const MoleBoard = ({clock,gameInfo,setGameInfo}) => {
     return (
         <div className="mole-board">
             {
-                Array(MOLE_NUMBER).fill(0).map( 
+                Array(Config.MOLE_NUMBER).fill(0).map( 
                     (val,ndx) => (
                         <Mole 
                             key={ndx}
