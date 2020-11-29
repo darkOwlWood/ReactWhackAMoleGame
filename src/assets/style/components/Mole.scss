@@ -4,8 +4,14 @@ $go-out-time: .4s;
     width: 21%;
     height: 21%;
 
+    cursor: url('../../static/hammerUp.cur'), auto;
+
     overflow: hidden;
     position: relative;
+}
+
+.mole:active{
+    cursor: url('../../static/hammerDown.cur'), auto;
 }
 
 %mole_hole{
@@ -15,7 +21,7 @@ $go-out-time: .4s;
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: contain;
-
+    
     position: absolute;
     bottom: 0;
 }
@@ -43,6 +49,7 @@ $go-out-time: .4s;
     position: absolute;
     top: 100%;
 }
+
 
 .mole__image--active-red{
     background-image: url('../../static/digglett_red.png');

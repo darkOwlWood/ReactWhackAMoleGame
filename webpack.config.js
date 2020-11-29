@@ -30,7 +30,7 @@ module.exports = {
                 ],
             },
             {
-                test:/\.(jpg|jpeg|png|gift)$/,
+                test:/\.(jpg|jpeg|png|gift|cur)$/,
                 use:[
                     {
                         loader:'url-loader',
