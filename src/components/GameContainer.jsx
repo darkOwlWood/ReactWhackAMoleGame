@@ -9,7 +9,7 @@ import Config from '../config';
 const GameContainer = () => {
 
     const [clock, setClock] = useState(0);
-    const [gameInfo, setGameInfo] = useState({score: 0, round: 1, scoreNeeded: Config.SCORE_NEEDED, gameStatus: Config.GAME_BEGIN});
+    const [gameInfo, setGameInfo] = useState({score: 0, round: 1, scoreNeeded: Config.SCORE_NEEDED[0], gameStatus: Config.GAME_BEGIN});
 
     useLayoutEffect( () => {
         console.log(gameInfo.gameStatus)
@@ -27,13 +27,13 @@ const GameContainer = () => {
     },[clock]);
 
     function nextLevel(){
-        if(gameInfo.round<Config.FINAL_ROUND && gameInfo.score>=Config.SCORE_NEEDED){
-            setGameInfo({...gameInfo, round: ++gameInfo.round});
+        if(gameInfo.round<Config.FINAL_ROUND && gameInfo.score>=gameInfo.scoreNeeded){
+            setGameInfo({...gameInfo, round: gameInfo.round + 1, scoreNeeded: Config.SCORE_NEEDED[gameInfo.round]});
             setTimeout(() => setClock(Config.INIT_TIME),Config.LVEL_TRANSITION_TIME);
-        }else if(gameInfo.round===Config.FINAL_ROUND && gameInfo.score>=Config.SCORE_NEEDED){
-            setGameInfo({...gameInfo, score:0, round:1, gameStatus: Config.GAME_WIN});
+        }else if(gameInfo.round===Config.FINAL_ROUND && gameInfo.score>=gameInfo.scoreNeeded){
+            setGameInfo({...gameInfo, score:0, round:1, scoreNeeded: Config.SCORE_NEEDED[0], gameStatus: Config.GAME_WIN});
         }else{
-            setGameInfo({...gameInfo, score:0, round:1, gameStatus: Config.GAME_LOSS});
+            setGameInfo({...gameInfo, score:0, round:1, scoreNeeded: Config.SCORE_NEEDED[0], gameStatus: Config.GAME_LOSS});
         }
     }
 

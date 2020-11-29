@@ -7,7 +7,7 @@ const Config = {
     
     INIT_TIME: 30,
     FINAL_ROUND: 5,
-    SCORE_NEEDED: 5000,
+    SCORE_NEEDED: [2000,3000,4000,5000,6000],
     MOLE_NUMBER: 16,
     MAX_MOLE: 8,
     IN_STATE: 0,
